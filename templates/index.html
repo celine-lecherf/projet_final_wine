@@ -1,0 +1,42 @@
+<h1 id="welcome-to-the-wine-o-meter-api-">Welcome to the Wine-O-Meter API!</h1>
+<p>Welcome to the Wine-O-Meter API documentation prediction AP-AI. Wine-o-meter is an application that allows wine producers to predict the quality score of their wine based on physicochemical inputs.</p>
+<p>What is AP-AI? It&#39;s a new beautiful AI model wrap into an API to help you to predict the quality score of your wine.</p>
+<h2 id="endpoints">Endpoints</h2>
+<p><em>POST /prediction</em></p>
+<p>This endpoint allows you to make a prediction of the quality score of your wine from 0 (the worst) to 10 (the best) based on physicochemical inputs.</p>
+<h3 id="how-to-request-this-endpoint-">How to request this endpoint?</h3>
+<p>You should request this endpoint using a POST method with a JSON content. Your JSON should contain a key named &quot;input&quot; with a list containing the 11 values of the physicochemical properties of the wine (floats). See below</p>
+<ol>
+<li>&#39;fixed acidity&#39;</li>
+<li>&#39;volatile acidity&#39;</li>
+<li>&#39;citric acid&#39;</li>
+<li>&#39;residual sugar&#39;</li>
+<li>&#39;chlorides&#39;</li>
+<li>&#39;free sulfur dioxide&#39;</li>
+<li>&#39;total sulfur dioxide&#39;</li>
+<li>&#39;density&#39;</li>
+<li>&#39;pH&#39;</li>
+<li>&#39;sulphates&#39;</li>
+<li>&#39;alcohol&#39;</li>
+</ol>
+<p>please respect the order of the pysicochemical input list. </p>
+<p>Example using the cd terminal</p>
+<p><code>$ curl -i -H &quot;Content-Type: application/json&quot; -X POST -d &#39;{&quot;input&quot;: [[7.0, 0.27, 0.36, 20.7, 0.045, 45.0, 170.0, 1.001, 3.0, 0.45, 8.8]]}&#39; https://final-app-dep.herokuapp.com/predict</code></p>
+<p>Example using Python:</p>
+<pre><code>import requests
+
+response = requests.post(<span class="hljs-string">"https://final-app-dep.herokuapp.com/predict"</span>, json={
+    <span class="hljs-string">"input"</span>: <span class="hljs-string">[[7.0, 0.27, 0.36, 20.7, 0.045, 45.0, 170.0, 1.001, 3.0, 0.45, 8.8]]</span>})
+
+<span class="hljs-built_in">print</span>(response.json())
+</code></pre><h2 id="errors">Errors</h2>
+<p>Our API will return 3 types of errors in a JSON format: </p>
+<pre><code>{<span class="hljs-comment">"msg"</span>: <span class="hljs-comment">"No Input key found in your request"</span>,
+<span class="hljs-comment">"msg"</span>: <span class="hljs-comment">"Only the POST Methods are accepted"</span>,
+<span class="hljs-comment">"msg"</span>: <span class="hljs-comment">"Error: not a JSON in your request"</span>}
+</code></pre><p>Intentified errors:</p>
+<ul>
+<li>Missing key &quot;input&quot;</li>
+<li>Invalid request method</li>
+<li>Missing JSON</li>
+</ul>
